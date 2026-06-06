@@ -1,8 +1,6 @@
 let questions = [];
 let current = 0;
 let selected = [];
-let revealed = [];
-let score = 0;
 let totalSecs = 0;
 let timerInterval;
 
@@ -13,7 +11,6 @@ fetch('/api/questions')
     .then(data => {
         questions = data;
         selected = new Array(questions.length).fill(null);
-        revealed = new Array(questions.length).fill(false);
         totalSecs = questions.length * 30;
         startTimer();
         renderQuestion();
@@ -37,25 +34,20 @@ function fmt(s) {
 function renderQuestion() {
     const q = questions[current];
 
-    // update stats bar
     document.getElementById('q-counter').textContent = `${current + 1} / ${questions.length}`;
-    const pct = ((current + 1) / questions.length) * 100;
-    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-fill').style.width = ((current + 1) / questions.length * 100) + '%';
     document.getElementById('progress-label').textContent = `Question ${current + 1} of ${questions.length}`;
 
-    // badge
+    // update score display to show answered count instead
+    const answered = selected.filter(s => s !== null).length;
+    document.getElementById('score-display').textContent = answered;
+
     const badgeCls = q.difficulty === 'easy' ? 'easy' : q.difficulty === 'hard' ? 'hard' : 'medium';
 
-    // options html
     const optionsHtml = q.options.map((opt, i) => {
         let cls = 'option-btn';
-        if (revealed[current]) {
-            if (i === q.correctIndex) cls += ' correct';
-            else if (i === selected[current]) cls += ' wrong';
-        } else if (selected[current] === i) {
-            cls += ' selected';
-        }
-        return `<button class="${cls}" onclick="selectOption(${i})" ${revealed[current] ? 'disabled' : ''}>
+        if (selected[current] === i) cls += ' selected';
+        return `<button class="${cls}" onclick="selectOption(${i})">
                     <span class="option-letter">${letters[i]}</span>${opt}
                 </button>`;
     }).join('');
@@ -79,13 +71,7 @@ function renderQuestion() {
 }
 
 function selectOption(idx) {
-    if (revealed[current]) return;
     selected[current] = idx;
-    revealed[current] = true;
-    if (idx === questions[current].correctIndex) {
-        score++;
-        document.getElementById('score-display').textContent = score;
-    }
     renderQuestion();
 }
 
@@ -100,9 +86,28 @@ function navigate(dir) {
 
 function showResult() {
     clearInterval(timerInterval);
+
+    let score = 0;
+    questions.forEach((q, idx) => {
+        if (selected[idx] === q.correctIndex) score++;
+    });
+
     const pct = Math.round((score / questions.length) * 100);
     const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : '📚';
     const msg = pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good job!' : 'Keep studying!';
+
+    // show per-question review
+    const reviewHtml = questions.map((q, idx) => {
+        const userAns = selected[idx];
+        const correct = userAns === q.correctIndex;
+        const icon = correct ? '✅' : '❌';
+        return `
+            <div class="question-card" style="margin-bottom:10px;">
+                <div class="q-text" style="font-size:13px;">${icon} ${q.text}</div>
+                ${!correct && userAns !== null ? `<div style="font-size:12px;color:#c0392b;margin-top:4px;">Your answer: ${q.options[userAns]}</div>` : ''}
+                ${!correct ? `<div style="font-size:12px;color:#1D9E75;margin-top:2px;">Correct: ${q.options[q.correctIndex]}</div>` : ''}
+            </div>`;
+    }).join('');
 
     document.getElementById('question-box').innerHTML = `
         <div class="result-screen">
@@ -121,6 +126,9 @@ function showResult() {
             </div>
             <button class="btn primary restart-btn" onclick="location.reload()">&#8635; Restart Quiz</button>
         </div>
+        <hr style="margin: 20px 0; border-color: #eee;">
+        <div style="font-size:13px;font-weight:600;color:#888;margin-bottom:12px;">REVIEW YOUR ANSWERS</div>
+        ${reviewHtml}
     `;
 
     document.getElementById('progress-fill').style.width = '100%';
