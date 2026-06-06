@@ -1,15 +1,22 @@
 package com.example.demo.model;
 
+import java.util.List;
+
 public class Question {
     private String text;
-    private String answer;
+    private List<String> options;
+    private int correctIndex;
+    private String difficulty;
 
-    public Question(String text, String answer) {
+    public Question(String text, List<String> options, int correctIndex, String difficulty) {
         this.text = text;
-        this.answer = answer;
+        this.options = options;
+        this.correctIndex = correctIndex;
+        this.difficulty = difficulty;
     }
 
-    // These "Getters" allow Spring to turn your Java object into JSON for the web
     public String getText() { return text; }
-    public String getAnswer() { return answer; }
+    public List<String> getOptions() { return options; }
+    public int getCorrectIndex() { return correctIndex; }
+    public String getDifficulty() { return difficulty; }
 }

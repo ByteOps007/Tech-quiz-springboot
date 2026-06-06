@@ -3,27 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Tech Quiz</title>
+    <title>Tech Quiz</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
 
 <div class="quiz-container">
-    <h1>Tech Quiz</h1>
 
-    <div id="progress-container">
-        <div id="progress-fill"></div>
+    <div class="quiz-header">
+        <span class="quiz-title"><i class="ti ti-devices-pc"></i> Tech Quiz</span>
+        <span class="quiz-sub">Spring Boot Edition</span>
     </div>
 
-    <div id="stats-container">
-        <div id="timer">Time Left: 120s</div>
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-label"><i class="ti ti-clock"></i> Time Left</div>
+            <div class="stat-value" id="timer">--:--</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label"><i class="ti ti-circle-check"></i> Score</div>
+            <div class="stat-value success" id="score-display">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label"><i class="ti ti-list-numbers"></i> Question</div>
+            <div class="stat-value" id="q-counter">-- / --</div>
+        </div>
+    </div>
+
+    <div class="progress-wrap">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-label" id="progress-label">Loading...</div>
     </div>
 
     <div id="question-box">
-        <p style="text-align: center;">Loading your questions...</p>
+        <p style="text-align:center; color:#888;">Loading questions from server...</p>
     </div>
 
-    <p id="feedback"></p>
 </div>
 
 <script src="script.js"></script>
