@@ -4,13 +4,25 @@ let selected = [];
 let totalSecs = 0;
 let timerInterval;
 
+function shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5);
+}
+
 const letters = ['A', 'B', 'C', 'D'];
 
 fetch('/api/questions')
     .then(res => res.json())
     .then(data => {
-        questions = data;
-        selected = new Array(questions.length).fill(null);
+            questions = shuffle(data).map(q => {
+                const correct = q.options[q.correctIndex];
+                const shuffledOptions = shuffle([...q.options]);
+                return {
+                    ...q,
+                    options: shuffledOptions,
+                    correctIndex: shuffledOptions.indexOf(correct)
+                };
+            });
+            selected = new Array(questions.length).fill(null);
         totalSecs = questions.length * 30;
         startTimer();
         renderQuestion();
