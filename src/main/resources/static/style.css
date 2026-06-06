@@ -1,0 +1,141 @@
+/* General Reset and Layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+/* Main Quiz Container */
+.quiz-container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Progress Bar */
+#progress-container {
+    width: 100%;
+    height: 12px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+#progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #4CAF50;
+    transition: width 0.6s ease-in-out;
+}
+
+/* Stats Container (Timer centered since score is removed) */
+#stats-container {
+    display: flex;
+    justify-content: center;
+    background: #f8f9fa;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+
+#timer {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #d9534f; /* Reddish color for the clock */
+}
+
+/* Individual Question Cards */
+.question-item {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: left;
+    border: 1px solid #e1e4e8;
+    border-left: 6px solid #4CAF50;
+}
+
+.question-text {
+    font-weight: 600;
+    font-size: 1.15rem;
+    display: block;
+    margin-bottom: 12px;
+    color: #2c3e50;
+}
+
+/* Input Fields */
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #dfe3e8;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    border-color: #4CAF50;
+}
+
+/* Navigation Buttons Layout */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between; /* Pushes Prev to left, Next to right */
+    margin-top: 30px;
+    gap: 20px;
+}
+
+button {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.1s;
+}
+
+/* Previous Button Styling */
+.prev-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.prev-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Next/Finish Button Styling */
+.next-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.next-btn:hover {
+    background-color: #45a049;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Results Screen Styling */
+.results-screen {
+    padding: 50px;
+}
