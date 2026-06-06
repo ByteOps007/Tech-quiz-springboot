@@ -60,7 +60,7 @@ function renderQuestion() {
         let cls = 'option-btn';
         if (selected[current] === i) cls += ' selected';
         return `<button class="${cls}" onclick="selectOption(${i})">
-                    <span class="option-letter">${letters[i]}</span>${opt}
+                    <span class="option-letter">${letters[i]}</span>${opt.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
                 </button>`;
     }).join('');
 
@@ -116,8 +116,8 @@ function showResult() {
         return `
             <div class="question-card" style="margin-bottom:10px;">
                 <div class="q-text" style="font-size:13px;">${icon} ${q.text}</div>
-                ${!correct && userAns !== null ? `<div style="font-size:12px;color:#c0392b;margin-top:4px;">Your answer: ${q.options[userAns]}</div>` : ''}
-                ${!correct ? `<div style="font-size:12px;color:#1D9E75;margin-top:2px;">Correct: ${q.options[q.correctIndex]}</div>` : ''}
+                ${!correct && userAns !== null ? `<div style="font-size:12px;color:#c0392b;margin-top:4px;">Your answer: ${q.options[userAns].replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>` : ''}
+                ${!correct ? `<div style="font-size:12px;color:#1D9E75;margin-top:2px;">Correct: ${q.options[q.correctIndex].replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>` : ''}
             </div>`;
     }).join('');
 
